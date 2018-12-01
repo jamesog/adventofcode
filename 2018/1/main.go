@@ -18,11 +18,34 @@ func changeFrequency(curFreq int, shift string) int {
 
 }
 
-func main() {
+func partOne(input []string) int {
 	freq := 0
+	for _, shift := range input {
+		freq = changeFrequency(freq, shift)
+	}
+	return freq
+}
+
+func partTwo(input []string) int {
+	seenFreqs := make(map[int]int)
+	freq := 0
+	for {
+		for _, shift := range input {
+			freq = changeFrequency(freq, shift)
+			seenFreqs[freq]++
+			if seenFreqs[freq] == 2 {
+				return freq
+			}
+		}
+	}
+}
+
+func main() {
+	var input []string
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		freq = changeFrequency(freq, scanner.Text())
+		input = append(input, scanner.Text())
 	}
-	fmt.Println(freq)
+	fmt.Println("Part one:", partOne(input))
+	fmt.Println("Part two:", partTwo(input))
 }
