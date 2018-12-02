@@ -29,6 +29,8 @@ func partOne(input []string) int {
 func partTwo(input []string) int {
 	seenFreqs := make(map[int]int)
 	freq := 0
+	// Fixes the bug for the +1 -1 test - we were told it starts at 0 therefore it's already been "seen"
+	seenFreqs[0] = 1
 	for {
 		for _, shift := range input {
 			freq = changeFrequency(freq, shift)
