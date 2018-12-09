@@ -56,17 +56,22 @@ type coord struct {
 	x, y int
 }
 
-type fabric map[coord]int
+type fabric map[coord][]int
 
-func coverage(claims []claim) int {
+func coverage(claims []claim) (int, int) {
 	var inches int
-	claimed := make(fabric)
+	fab := make(fabric)
+	uniq := make(map[int]struct{})
 	for _, c := range claims {
+
 		for x := c.Left; x <= c.Right; x++ {
 			for y := c.Top; y <= c.Bottom; y++ {
-				claimed[coord{x, y}]++
+				fab[coord{x, y}] = append(fab[coord{x, y}], c.ID)
 			}
+
 		}
+
+		uniq[c.ID] = struct{}{}
 
 		// Just look at all the complicated things I tried before the above 😭
 
@@ -108,12 +113,30 @@ func coverage(claims []claim) int {
 		// }
 	}
 
-	for _, c := range claimed {
-		if c > 1 {
+	for _, c := range fab {
+		if len(c) > 1 {
 			inches++
 		}
 	}
-	return inches
+
+	for _, ids := range fab {
+		if len(ids) <= 1 {
+			continue
+		}
+		for _, id := range ids {
+			delete(uniq, id)
+		}
+		if len(uniq) == 1 {
+			break
+		}
+	}
+	var uc int
+	for id := range uniq {
+		uc = id
+		break // There should only be one entry
+	}
+
+	return inches, uc
 }
 
 func main() {
@@ -122,5 +145,7 @@ func main() {
 	for scanner.Scan() {
 		input = append(input, scanner.Text())
 	}
-	fmt.Printf("Part one: %d sq. in.\n", coverage(allClaims(input)))
+	sqin, noOverlap := coverage(allClaims(input))
+	fmt.Printf("Part one: %d sq. in.\n", sqin)
+	fmt.Printf("Part two: ID %d\n", noOverlap)
 }
