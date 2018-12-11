@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strings"
 )
@@ -73,10 +74,30 @@ func polymer(input string) string {
 	return b.String()
 }
 
+func shortestPolymer(input string) string {
+	m := make(map[rune]string)
+	for i := 'A'; i <= 'Z'; i++ {
+		s := strings.Replace(input, string(i), "", -1)
+		s = strings.Replace(s, string(toLower(byte(i))), "", -1)
+		p := polymer(s)
+		m[i] = p
+	}
+	min := math.MaxUint32
+	var output string
+	for _, p := range m {
+		if len(p) < min {
+			min = len(p)
+			output = p
+		}
+	}
+	return output
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	// Only one line of input in this challenge
 	scanner.Scan()
 	input := scanner.Text()
-	fmt.Printf("Part one: %d\n", len(polymer(input)))
+	fmt.Println("Part one:", len(polymer(input)))
+	fmt.Println("Part two:", len(shortestPolymer(input)))
 }

@@ -11,3 +11,13 @@ func TestPolymer(t *testing.T) {
 		t.Errorf("want %q; got %q", want, output)
 	}
 }
+
+func TestShortestPolymer(t *testing.T) {
+	input := "dabAcCaCBAcCcaDA"
+	want := "daDA"
+	output := shortestPolymer(input)
+
+	if want != output {
+		t.Errorf("want %q; got %q", want, output)
+	}
+}
