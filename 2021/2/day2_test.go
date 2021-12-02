@@ -15,10 +15,21 @@ func TestPosition(t *testing.T) {
 	for _, input := range inputs {
 		command(input, &pos)
 	}
+	// Part 1:
+	/*
+		if pos.horizontal != 15 {
+			t.Errorf("want horizontal position 15; got %d", pos.horizontal)
+		}
+		if pos.depth != 10 {
+			t.Errorf("want depth 10; got %d", pos.horizontal)
+		}
+	*/
+
+	// Part 2:
 	if pos.horizontal != 15 {
 		t.Errorf("want horizontal position 15; got %d", pos.horizontal)
 	}
-	if pos.depth != 10 {
-		t.Errorf("want depth 10; got %d", pos.horizontal)
+	if pos.depth != 60 {
+		t.Errorf("want depth 60; got %d", pos.horizontal)
 	}
 }

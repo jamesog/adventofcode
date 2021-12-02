@@ -10,15 +10,21 @@ import (
 
 // Part 1: Calculate horizontal position and depth after all instructions.
 //         Multiply final horizontal position by final depth.
+// Part 2: Up/down now means to adjust aim, forward means multiply move position
+//         by aim.
 
 type position struct {
 	horizontal int
 	depth      int
+	aim        int
 }
 
-func (p *position) forward(move int) { p.horizontal += move }
-func (p *position) up(move int)      { p.depth -= move }
-func (p *position) down(move int)    { p.depth += move }
+func (p *position) forward(move int) {
+	p.horizontal += move
+	p.depth += move * p.aim
+}
+func (p *position) up(move int)   { p.aim -= move }
+func (p *position) down(move int) { p.aim += move }
 
 func command(input string, pos *position) {
 	parts := strings.Split(input, " ")
